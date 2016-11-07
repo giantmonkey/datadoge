@@ -6,12 +6,13 @@ module Datadoge
   include GemConfig::Base
 
   with_configuration do
+    has :statsd_host, classes: String, default: nil
     has :environments, classes: Array, default: ['production']
   end
 
   class Railtie < Rails::Railtie
     initializer "datadoge.configure_rails_initialization" do |app|
-      $statsd = Statsd.new
+      $statsd = Statsd.new(Datadoge.configuration.statsd_host)
 
       ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*args|
         event = ActiveSupport::Notifications::Event.new(*args)
