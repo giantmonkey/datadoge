@@ -6,7 +6,7 @@ module Datadoge
   include GemConfig::Base
 
   with_configuration do
-    has :statsd_host, classes: String, default: nil
+    has :statsd_host, classes: String, default: Statsd::DEFAULT_HOST
     has :environments, classes: Array, default: ['production']
   end
 
